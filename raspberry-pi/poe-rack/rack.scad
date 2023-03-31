@@ -1,4 +1,4 @@
-piWidth = 15;
+piWidth = 16;
 piLength = 65;
 
 baseDepth = 2;
