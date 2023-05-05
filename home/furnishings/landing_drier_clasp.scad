@@ -21,15 +21,15 @@ wallThickness = 5;
 
 // Drier Arm Holder Piece
 difference() {
-  cube([armWidth + (2 * wallThickness), armDepth + (2 * wallThickness), armHeight + wallThickness]);
+  cube([armWidth + (2 * wallThickness), 2 * (armDepth + (2 * wallThickness)), armHeight + wallThickness]);
 
-  translate([wallThickness, wallThickness, wallThickness]) {
-    cube([armWidth, armDepth, armHeight]);
+  translate([wallThickness, wallThickness, 0]) {
+    cube([armWidth, armDepth, armHeight + wallThickness]);
   }
 }
 
 // Railing Bracket
-translate ([0, armDepth + wallThickness, 0]) {
+translate ([0, (2 * armDepth) + (3 * wallThickness), 0]) {
   cube([armWidth + (2 * wallThickness), wallThickness, railHeight + (2 * wallThickness)]);
   // cube([armWidth + (2 * wallThickness), railDepth + (2 * wallThickness), wallThickness]);
 
@@ -40,8 +40,8 @@ translate ([0, armDepth + wallThickness, 0]) {
   translate([0, 0, railHeight + wallThickness]) {
     cube([armWidth + (2 * wallThickness), railDepth + (2 * wallThickness), wallThickness]);
 
-    translate([0, railDepth + wallThickness, -(9 * wallThickness)]) {
-      cube([armWidth + (2 * wallThickness), wallThickness, 10 * wallThickness]);
+    translate([0, railDepth + wallThickness, -(railHeight + wallThickness)]) {
+      cube([armWidth + (2 * wallThickness), wallThickness, railHeight + wallThickness]);
     }
   }
 }
