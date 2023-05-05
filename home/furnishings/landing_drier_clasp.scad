@@ -12,7 +12,7 @@
 railHeight = 140;
 railDepth = 19.5;
 
-armHeight = 70;
+armHeight = 30; // We only need to support some of the arm in a through-hole style
 armWidth = 12;
 armDepth = 23.6;
 
@@ -40,8 +40,8 @@ translate ([0, armDepth + wallThickness, 0]) {
   translate([0, 0, railHeight + wallThickness]) {
     cube([armWidth + (2 * wallThickness), railDepth + (2 * wallThickness), wallThickness]);
 
-    translate([0, railDepth + wallThickness, -(4 * wallThickness)]) {
-      cube([armWidth + (2 * wallThickness), wallThickness, 5 * wallThickness]);
+    translate([0, railDepth + wallThickness, -(9 * wallThickness)]) {
+      cube([armWidth + (2 * wallThickness), wallThickness, 10 * wallThickness]);
     }
   }
 }
