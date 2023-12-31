@@ -6,69 +6,96 @@ $fs = 0.4;
 widthBadger = 86;
 heightBadger = 49;
 
-// Dimensions: Card
+// Dimensions: Badger Plate
+offsetHole = 2;
+radiusHole = 1.5;
+
+// Dimensions: ID Card
 widthCard = 86;
 heightCard = 55;
-
-// Dimensions: Card Retainer
-thickWall = 3;
-heightWall = 1.5;
-overlapWall = 2;
-bufferWall = 3;
+depthCard = 1.25;
 
 // Dimensions: Fixings
-radiusHole = 3 / 2;
-diameterNut = 4;
-offsetHole = 2;
-radiusStrut = 5 / 2;
+lengthScrew = 3;
+lengthNut = 1;
+radiusNut = 2.2;
 
 // Dimensions: General
-depthPlate = 2;
 radiusPlate = 1;
+heightWall = 2;
+bufferPlate = 2;
+overhangWall = 2;
 
-// Calculations
-plateWidth = widthCard + thickWall + bufferWall; // 86 + 3 + 3 = 92
-plateHeight = heightCard + thickWall + bufferWall; // 55 + 3 + 3 = 61
+// Module: Hull
+module hull_cyl() {
+    cylinder(r=radiusPlate, h=lengthScrew + heightWall);
+}
 
-// Model: Card Plate
+module hull_nut() {
+    linear_extrude(height=lengthNut) {
+        circle(r=radiusNut, $fn=6);
+    }
+    translate([0, 0, lengthNut - lengthScrew]) {
+        cylinder(r=radiusHole, h=lengthScrew - lengthNut);
+    }
+}
+
+// Model
 render() {
-    // difference() {
-        hull() {
-            translate([radiusPlate, radiusPlate, 0])
-                cylinder(r=radiusPlate, h=depthPlate);
+    difference() {
+        // Main Plate Body
+        hull(){
+            translate([radiusPlate, radiusPlate, 0]) {
+                hull_cyl();
+            }
 
-            translate([plateWidth - radiusPlate, radiusPlate, 0])
-                cylinder(r=radiusPlate, h=depthPlate);
+            translate([widthCard + (2 * bufferPlate) - radiusPlate, radiusPlate, 0]) {
+                hull_cyl();
+            }
 
-            translate([radiusPlate, plateHeight - radiusPlate, 0])
-                cylinder(r=radiusPlate, h=depthPlate);
+            translate([radiusPlate, heightCard + (2 * bufferPlate) - radiusPlate, 0]) {
+                hull_cyl();
+            }
 
-            translate([plateWidth - radiusPlate, plateHeight - radiusPlate, 0])
-                cylinder(r=radiusPlate, h=depthPlate);
+            translate([widthCard + (2 * bufferPlate) - radiusPlate, heightCard + (2 * bufferPlate) - radiusPlate, 0]) {
+                hull_cyl();
+            }
         }
 
-    //     translate([offsetHole + radiusHole, offsetHole + radiusHole + (heightCard - heightBadger), 0]) {
-    //         cylinder(r=radiusHole, h=depthPlate / 2);
-    //         translate([0,0,1])
-    //             cylinder(r=diameterNut / 2, h=depthPlate / 2, $fn = 6);
-    //     }
+        // Subtract hole for screw/nut - bottom-left
+        translate([bufferPlate + offsetHole + radiusHole, bufferPlate + ((heightCard - heightBadger) / 2) + offsetHole + radiusHole, lengthScrew - lengthNut]) {
+            hull_nut();
+        }
 
-    //     translate([offsetHole + radiusHole, heightCard + offsetHole + radiusHole + (heightCard - heightBadger), 0]) {
-    //         cylinder(r=radiusHole, h=depthPlate / 2);
-    //         translate([0,0,1])
-    //             cylinder(r=diameterNut / 2, h=depthPlate / 2, $fn = 6);
-    //     }
+        // Subtract hole for screw/nut - bottom-right
+        translate([bufferPlate + widthBadger - (offsetHole + radiusHole), bufferPlate + ((heightCard - heightBadger) / 2) + offsetHole + radiusHole, lengthScrew - lengthNut]) {
+            hull_nut();
+        }
 
-    //     translate([offsetHole + radiusHole, offsetHole + radiusHole + (heightCard - heightBadger), 0]) {
-    //         cylinder(r=radiusHole, h=depthPlate / 2);
-    //         translate([0,0,1])
-    //             cylinder(r=diameterNut / 2, h=depthPlate / 2, $fn = 6);
-    //     }
+        // Subtract hole for screw/nut - top-left
+        translate([bufferPlate + offsetHole + radiusHole, bufferPlate + heightBadger + ((heightCard - heightBadger) / 2) - (offsetHole + radiusHole), lengthScrew - lengthNut]) {
+            hull_nut();
+        }
 
-    //     translate([offsetHole + radiusHole, offsetHole + radiusHole + (heightCard - heightBadger), 0]) {
-    //         cylinder(r=radiusHole, h=depthPlate / 2);
-    //         translate([0,0,1])
-    //             cylinder(r=diameterNut / 2, h=depthPlate / 2, $fn = 6);
-    //     }
-    // }
+        // Subtract hole for screw/nut - top-right
+        translate([bufferPlate + widthBadger - (offsetHole + radiusHole), bufferPlate + heightBadger + ((heightCard - heightBadger) / 2) - (offsetHole + radiusHole), lengthScrew - lengthNut]) {
+            hull_nut();
+        }
+
+        // Subtract space for the card to sit in
+        translate([bufferPlate, bufferPlate, lengthScrew]) {
+            cube([widthCard + bufferPlate, heightCard, depthCard]);
+        }
+
+        // Subtract space for card to be visible through
+ /*       translate([bufferPlate + overhangWall, bufferPlate + overhangWall, lengthScrew + depthCard]) {
+            cube([widthCard - overhangWall, heightCard - (2 * overhangWall), heightWall - depthCard]);
+        }
+*/
+ /*
+        // Subtract right-hand portion of view fram to allow for card removal
+        translate([bufferPlate + widthCard, bufferPlate + overhangWall, lengthScrew + depthCard]) {
+            cube([bufferPlate, heightCard - (2 * overhangWall), heightWall - depthCard]);
+        } */
+    }
 }
