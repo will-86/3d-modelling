@@ -19,6 +19,13 @@ widthSupport = 1.5;
 depthSupport = 5;
 offsetSupport = 21;
 
+// Dimensions: Battery Holders
+heightSupport = 10;
+lengthSupport = 20;
+widthSupport = 1.5;
+depthSupport = 5;
+offsetSupport = 21;
+
 // Dimensions: General
 depthPlate = 2;
 radiusPlate = 1;
@@ -108,6 +115,16 @@ render() {
             // Thread hole
             cylinder(r=radiusHole, h=lengthThread + depthPlate);
         }
+
+    // Battery Holder
+    translate([0, (heightBadger - heightSupport) / 2, 0])
+        cube([widthSupport, heightSupport, depthPlate + depthSupport]);
+
+    translate([widthBadger - widthSupport, (heightBadger - heightSupport) / 2, 0])
+        cube([widthSupport, heightSupport, depthPlate + depthSupport]);
+
+    translate([offsetSupport - (lengthSupport / 2), 0, 0])
+        cube([lengthSupport, widthSupport, depthPlate + depthSupport]);
 
     // Battery Holder
     translate([0, (heightBadger - heightSupport) / 2, 0])
