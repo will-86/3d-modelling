@@ -1,2 +1,5 @@
+.vscode/
 *.stl
 *.gcode
+.samples/
+*.3mf
