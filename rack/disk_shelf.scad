@@ -55,10 +55,6 @@ module rack_bracket(side="left"){
 
 // disk shelf
 base();
-// outer_wall();
-// translate([total_width, 0, 0]) {
-//   outer_wall();
-// }
 
 for (i = [0 : wide_disk_count]) {
   translate ([i * (wide_disk_width + wall_thickness), 0, 0]) {
