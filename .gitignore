@@ -3,3 +3,4 @@
 *.gcode
 .samples/
 *.3mf
+.DS_STORE
